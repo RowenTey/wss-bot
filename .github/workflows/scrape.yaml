@@ -28,7 +28,7 @@ jobs:
           KEYFILE_BASE64: ${{ secrets.KEYFILE_JSON }}
 
       - name: Debug directory
-        run: ls -a
+        run: ls -lh
 
       - name: Debug keyfile.json
         run: cat keyfile.json
