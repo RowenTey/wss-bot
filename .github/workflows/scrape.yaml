@@ -20,10 +20,9 @@ jobs:
           python-version: 3.9
 
       - name: Decode keyfile.json
-        run: 'echo "$KEYFILE" | base64 -d > keyfile.json'
-        shell: bash
+        run: echo $KEYFILE_BASE64 | base64 --decode > keyfile.json
         env:
-          KEYFILE: ${{ secrets.KEYFILE_JSON }}
+          KEYFILE_BASE64: ${{ secrets.KEYFILE_JSON }}
 
       - name: Debug directory
         run: ls -a
