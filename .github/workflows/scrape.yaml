@@ -19,22 +19,10 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Debug env secret
-        run: echo "${{ secrets.KEYFILE_JSON }}"
-
       - name: Decode keyfile.json
         run: echo $KEYFILE_BASE64 | base64 --decode > keyfile.json
         env:
           KEYFILE_BASE64: ${{ secrets.KEYFILE_JSON }}
-
-      - name: Debug directory
-        run: ls -lh
-
-      - name: Debug keyfile.json
-        run: cat keyfile.json
-
-      - name: Debug main.py
-        run: cat main.py
 
       - name: Install dependencies
         run: |
