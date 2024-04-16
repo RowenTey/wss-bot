@@ -27,6 +27,9 @@ jobs:
 
       - name: Debug keyfile.json
         run: cat keyfile.json
+        
+      - name: Debug main.py
+        run: cat main.py
 
       - name: Install dependencies
         run: |
