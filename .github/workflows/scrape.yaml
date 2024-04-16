@@ -19,6 +19,9 @@ jobs:
         with:
           python-version: 3.9
 
+      - name: Debug env secret
+        run: echo "${{ secrets.KEYFILE_JSON }}"
+
       - name: Decode keyfile.json
         run: echo $KEYFILE_BASE64 | base64 --decode > keyfile.json
         env:
