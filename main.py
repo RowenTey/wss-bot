@@ -249,4 +249,8 @@ Learning Outcome: \n{row['Learning Outcome']}\n
 
 
 if __name__ == '__main__':
+    keyfile_path = "keyfile.json"
+    with open(keyfile_path, "r") as file:
+        keyfile_contents = file.read()
+    print(keyfile_contents)
     asyncio.run(main())
