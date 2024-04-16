@@ -19,8 +19,8 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Write keyfile.json
-        run: echo '${{ secrets.KEYFILE_JSON }}' > keyfile.json
+      - name: Decode keyfile.json
+        run: echo '${{ secrets.KEYFILE_JSON }}' | base64 --decode > keyfile.json
 
       - name: Install dependencies
         run: |

@@ -24,6 +24,8 @@ PASSWORD = os.getenv("PASSWORD")
 
 class GoogleSheetsConnector:
     def __init__(self, keyfile_path, sheet_name):
+        if not os.path.isfile(keyfile_path):
+            raise Exception("Invalid keyfile path")
         self.creds = ServiceAccountCredentials.from_json_keyfile_name(
             keyfile_path)
         self.client = gspread.authorize(self.creds)
