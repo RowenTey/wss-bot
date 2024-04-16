@@ -20,7 +20,7 @@ jobs:
           python-version: 3.9
 
       - name: Decode keyfile.json
-        run: echo '${{ secrets.KEYFILE_JSON }}' | base64 --decode > keyfile.json
+        run: echo ${{ secrets.KEYFILE_JSON }} | base64 -decode > keyfile.json
 
       - name: Debug directory
         run: ls -a
