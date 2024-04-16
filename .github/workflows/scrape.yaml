@@ -1,0 +1,39 @@
+name: Scrape WSS Job
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run at 00:00, 08:00, and 16:00 UTC
+    - cron: "0 0,8,16 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Write keyfile.json
+        run: echo '${{ secrets.KEYFILE_JSON }}' > keyfile.json
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Setup Chrome Driver
+        uses: nanasess/setup-chromedriver@master
+
+      - name: Run script
+        run: python main.py
+        env:
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
