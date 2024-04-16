@@ -249,6 +249,7 @@ Learning Outcome: \n{row['Learning Outcome']}\n
 
 
 if __name__ == '__main__':
+    print("Printing keyfile!")
     keyfile_path = "keyfile.json"
     with open(keyfile_path, "r") as file:
         keyfile_contents = file.read()
