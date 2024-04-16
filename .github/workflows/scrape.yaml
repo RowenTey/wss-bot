@@ -22,8 +22,11 @@ jobs:
       - name: Decode keyfile.json
         run: echo '${{ secrets.KEYFILE_JSON }}' | base64 --decode | jq > keyfile.json
 
+      - name: Debug directory
+        run: ls -a
+
       - name: Debug keyfile.json
-        run: ls -a && cat keyfile.json
+        run: cat keyfile.json
 
       - name: Install dependencies
         run: |
