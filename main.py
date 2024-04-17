@@ -50,9 +50,9 @@ class GoogleSheetsConnector:
 def scrape() -> list[dict]:
     # For Chrome
     chrome_options = ChromeOptions()
-    # chrome_options.add_argument("--headless")
-    # chrome_options.add_argument("--no-sandbox")
-    # chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_driver = webdriver.Chrome(options=chrome_options)
     chrome_driver.get("https://venus.wis.ntu.edu.sg/PortalServices/ServiceListModule/LaunchService.aspx?type=1&launchSvc=https%3A%2F%2Fvenus%2Ewis%2Entu%2Eedu%2Esg%2FWSS2%2FStudent%2FLogin%2Easpx")
 
