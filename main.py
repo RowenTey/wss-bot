@@ -108,7 +108,7 @@ def scrape_jobs(chrome_driver: webdriver.Chrome, wait: WebDriverWait) -> list[di
     except NoSuchElementException as e:
         chrome_driver.save_screenshot("error_screenshot.png")
         print("No jobs found!")
-        return []
+        raise RuntimeError("No jobs found!")
 
     data = []
     for i, row in enumerate(table_rows[1:]):
@@ -135,7 +135,7 @@ def scrape_jobs(chrome_driver: webdriver.Chrome, wait: WebDriverWait) -> list[di
         except TimeoutException:
             print("TimeoutException: New tab did not load!")
             chrome_driver.save_screenshot("error_screenshot.png")
-            continue
+            raise RuntimeError("New tab did not load!")
 
         job_type = chrome_driver.find_element(
             by=By.ID, value="ctl00_detail_ucJobMain1_lblJobType").text
@@ -231,8 +231,13 @@ async def main():
     df = df.iloc[1:]
     print("Fetched data from Google Sheets successfully!")
 
-    jobs = pd.DataFrame(scrape())
-    print("Scraped data successfully!")
+    try:
+        jobs = pd.DataFrame(scrape())
+        print("Scraped data successfully!")
+    except RuntimeError as e:
+        print(e)
+        send_message("An error occurred while scraping the jobs :(")
+        return
 
     res_df, new_jobs_df = process_jobs(df, jobs)
     print("Processed jobs!")
