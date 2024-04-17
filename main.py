@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException, TimeoutException
 from oauth2client.service_account import ServiceAccountCredentials
 from gspread_dataframe import set_with_dataframe
 from datetime import datetime, timedelta
@@ -50,9 +50,9 @@ class GoogleSheetsConnector:
 def scrape() -> list[dict]:
     # For Chrome
     chrome_options = ChromeOptions()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
+    # chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--no-sandbox")
+    # chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_driver = webdriver.Chrome(options=chrome_options)
     chrome_driver.get("https://venus.wis.ntu.edu.sg/PortalServices/ServiceListModule/LaunchService.aspx?type=1&launchSvc=https%3A%2F%2Fvenus%2Ewis%2Entu%2Eedu%2Esg%2FWSS2%2FStudent%2FLogin%2Easpx")
 
@@ -101,9 +101,14 @@ def scrape() -> list[dict]:
 
 def scrape_jobs(chrome_driver: webdriver.Chrome, wait: WebDriverWait) -> list[dict]:
     import re
-    job_table = wait.until(EC.presence_of_element_located(
-        (By.ID, "ctl00_detail_gvAvailableJob")))
-    table_rows = job_table.find_elements(by=By.TAG_NAME, value="tr")
+    try:
+        job_table = wait.until(EC.presence_of_element_located(
+            (By.ID, "ctl00_detail_gvAvailableJob")))
+        table_rows = job_table.find_elements(by=By.TAG_NAME, value="tr")
+    except NoSuchElementException as e:
+        chrome_driver.save_screenshot("error_screenshot.png")
+        print("No jobs found!")
+        return []
 
     data = []
     for i, row in enumerate(table_rows[1:]):
@@ -123,9 +128,14 @@ def scrape_jobs(chrome_driver: webdriver.Chrome, wait: WebDriverWait) -> list[di
         print(f"Anchor: {anchor_tag.text}\n")
         anchor_tag.click()
 
-        # Wait until the new tab finishes loading
-        wait.until(EC.number_of_windows_to_be(2))
-        chrome_driver.switch_to.window(chrome_driver.window_handles[-1])
+        try:
+            # Wait until the new tab finishes loading
+            wait.until(EC.number_of_windows_to_be(2))
+            chrome_driver.switch_to.window(chrome_driver.window_handles[-1])
+        except TimeoutException:
+            print("TimeoutException: New tab did not load!")
+            chrome_driver.save_screenshot("error_screenshot.png")
+            continue
 
         job_type = chrome_driver.find_element(
             by=By.ID, value="ctl00_detail_ucJobMain1_lblJobType").text
@@ -162,8 +172,6 @@ def scrape_jobs(chrome_driver: webdriver.Chrome, wait: WebDriverWait) -> list[di
             "Status": "Active"
         }
         data.append(job_data_dict)
-
-        # chrome_driver.save_screenshot(f"job_page_screenshot.png")
 
         # Close the new tab
         chrome_driver.close()
