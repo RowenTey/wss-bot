@@ -155,7 +155,8 @@ class JobScraper:
                 # Find the anchor tag again
                 anchor_tag = self.wait.until(EC.presence_of_element_located(
                     (By.CSS_SELECTOR, f"table > tbody > tr:nth-child({i+1}) > td:nth-child(1) > a")))
-                anchor_tag.click()
+                # anchor_tag.click()
+                self.driver.execute_script("arguments[0].click();", anchor_tag)
             except ElementClickInterceptedException:
                 # Find the anchor tag again
                 anchor_tag = self.wait.until(EC.presence_of_element_located(
