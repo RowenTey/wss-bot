@@ -28,7 +28,11 @@ Stay on top of the part time job grind!
 
    > Click "Manage service accounts", then create a service account for the connector. On the Create key step, create and download a key in JSON format.
 
-## Tech Stack
+## Tech Stack 💻
 
 - Selenium
 - Github Actions
+
+## Review 📜
+
+If this repository has helped you in any form or way, do consider leaving a star 🌟
