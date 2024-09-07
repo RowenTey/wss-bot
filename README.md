@@ -20,13 +20,13 @@ Stay on top of the part time job grind!
 
 3. Obtain a Google Sheet API key
 
-   > Open the Google Sheets API page and click the Enable button. This takes you to the API manager page.
+   > Open the Google Sheets API page and click the "Enable" button. This takes you to the API manager page.
 
    > Select a project using the drop down menu at the top of the page. Create a new project, if you do not already have one.
 
-   > Choose Credentials in the left panel.
+   > Choose "Credentials" in the left panel.
 
-   > Click Manage service accounts, then create a service account for the connector. On the Create key step, create and download a key in JSON format.
+   > Click "Manage service accounts", then create a service account for the connector. On the Create key step, create and download a key in JSON format.
 
 ## Tech Stack
 
