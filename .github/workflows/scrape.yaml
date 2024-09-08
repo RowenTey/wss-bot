@@ -2,9 +2,9 @@ name: Scrape WSS Job
 
 on:
   workflow_dispatch:
-  # schedule:
+  schedule:
     # Run at 00:00, 04:00, 08:00, 12:00, 16:00 & 20:00 UTC
-    # - cron: "0 0,4,8,12,16,20 * * *"
+    - cron: "0 0,4,8,12,16,20 * * *"
 
 jobs:
   build:
